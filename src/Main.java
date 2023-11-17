@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
@@ -25,8 +26,11 @@ public class Main {
 
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
+//        driver.manage().timeouts().pageLoadTimeout(300, TimeUnit.SECONDS);
+//        driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
         driver.manage().window().maximize();
-        driver.get("https://telugu.timesnownews.com/");
+//        driver.get("https://telugu.timesnownews.com/");
+          driver.get("https://www.zoomtventertainment.com/");
         String currentURL = driver.getCurrentUrl();
         System.out.println("Current URL = " + currentURL);
         String pageSource = driver.getPageSource();
@@ -44,13 +48,13 @@ public class Main {
             linkList.add(link);
         }
 
-        try (FileWriter fileWriter = new FileWriter("LinkStatus.csv")) {
+        try (FileWriter fileWriter = new FileWriter("ZoomEntertainmentStatus.txt")) {
             for (String link : linkList) {
                 System.out.println(link);
 
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(new URI(link))
-                        .timeout(Duration.of(10, ChronoUnit.SECONDS))
+                        .timeout(Duration.of(300, ChronoUnit.SECONDS))
                         .GET()
                         .build();
 
